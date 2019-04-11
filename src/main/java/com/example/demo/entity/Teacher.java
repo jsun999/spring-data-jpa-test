@@ -23,6 +23,7 @@ public class Teacher implements Serializable {
 
 //    @JsonIgnore
     @ManyToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER)
+    @JoinTable(name="teacher_student",joinColumns={@JoinColumn(name="teacher_id")},inverseJoinColumns={@JoinColumn(name="student_id")})
     private List<Student> students;
 
 }
