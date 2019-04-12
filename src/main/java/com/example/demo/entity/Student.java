@@ -27,6 +27,7 @@ public class Student implements Serializable {
 
     @OneToOne
     private Address address;
+
     @ManyToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
     @JoinTable(name = "student_teacher", inverseJoinColumns = @JoinColumn(name = "teacher_id"), joinColumns = @JoinColumn(name = "student_id"))
     private Set<Teacher> teachers ;
