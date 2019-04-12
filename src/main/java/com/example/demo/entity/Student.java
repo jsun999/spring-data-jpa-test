@@ -2,13 +2,19 @@ package com.example.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "jpa_student")
 @NamedEntityGraph(name = "Student.lazy", attributeNodes = {@NamedAttributeNode("teachers")})
@@ -19,10 +25,11 @@ public class Student implements Serializable {
 
     private String name;
 
-
-//    @JsonIgnore
-    @ManyToMany(cascade = CascadeType.REFRESH)
+    @OneToOne
+    private Address address;
+    @ManyToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
     @JoinTable(name = "student_teacher", inverseJoinColumns = @JoinColumn(name = "teacher_id"), joinColumns = @JoinColumn(name = "student_id"))
-    private Set<Teacher> teachers = new HashSet<>();
+    private Set<Teacher> teachers ;
+
 
 }

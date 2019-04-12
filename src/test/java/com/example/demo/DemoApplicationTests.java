@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.dao.SchoolClassDao;
 import com.example.demo.dao.StudentDao;
 import com.example.demo.dao.TeacherDao;
+import com.example.demo.dto.StudentDto;
 import com.example.demo.entity.SchoolClass;
 import com.example.demo.entity.Student;
 import com.example.demo.entity.Teacher;
@@ -12,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,8 +21,6 @@ public class DemoApplicationTests {
 
     @Autowired
     StudentDao studentDao;
-//    @Autowired
-//    SchoolClassDao schoolClassDao;
 
     @Autowired
     TeacherDao teacherDao;
@@ -41,17 +37,16 @@ public class DemoApplicationTests {
 
     @Test
     public void test_findS(){
-        Optional<Student> student = studentDao.findMyById((long) 1);
-        Student s = student.get();
-        System.out.println(s);
+        StudentDto student = studentDao.findMyById((long) 1);
+        Set<StudentDto.TeacherSummary> studentTeachers= student.getTeachers();
+        for (Iterator<StudentDto.TeacherSummary> iterator = studentTeachers.iterator(); iterator.hasNext(); ) {
+            StudentDto.TeacherSummary next =  iterator.next();
+            System.out.println(next.getName());
+        }
+        System.out.println(student.getAddress().getName());
     }
 
 
-    @Test
-    public void test1(){
-        Optional<Teacher> teacher = teacherDao.findById(1l);
-        Teacher t = teacher.get();
-        System.out.println(t);
-    }
+
 
 }
