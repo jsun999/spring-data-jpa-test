@@ -26,7 +26,7 @@ public class Teacher implements Serializable {
 
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "teachers")
+    @ManyToMany(cascade = CascadeType.ALL,mappedBy = "teachers")
     private Set<Student> students;
 
 

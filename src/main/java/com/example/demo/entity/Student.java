@@ -17,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "jpa_student")
-@NamedEntityGraph(name = "Student.lazy", attributeNodes = {@NamedAttributeNode("teachers")})
+@NamedEntityGraph(name = "Student.lazy", attributeNodes = {@NamedAttributeNode("teachers"),@NamedAttributeNode("address")})
 public class Student implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -28,7 +28,7 @@ public class Student implements Serializable {
     @OneToOne
     private Address address;
 
-    @ManyToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(name = "student_teacher", inverseJoinColumns = @JoinColumn(name = "teacher_id"), joinColumns = @JoinColumn(name = "student_id"))
     private Set<Teacher> teachers ;
 

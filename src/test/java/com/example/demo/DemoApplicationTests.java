@@ -11,8 +11,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.persistence.criteria.*;
 import java.util.*;
 
 @RunWith(SpringRunner.class)
@@ -46,7 +48,33 @@ public class DemoApplicationTests {
         System.out.println(student.getAddress().getName());
     }
 
+    @Test
+    public void test_finds2(){
+        Long o = studentDao.countStudentTeacherCountById(new Specification<Student>() {
+            @Override
+            public Predicate toPredicate(Root<Student> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Expression> list = new ArrayList<>();
+                list.add(criteriaBuilder.count(root.get("teachers")));
+                list.add(criteriaBuilder.equal(root.get("name").as(String.class),"jsun2"));
+                Predicate[] p = new Predicate[list.size()];
+                return criteriaBuilder.and(list.toArray(p));
+            }
+        });
+        System.out.println(o);
+    }
 
+    @Test
+    public void test_find3(){
+        Optional<Student> s = studentDao.findOne(
+            new Specification<Student>() {
+                @Override
+                public Predicate toPredicate(Root<Student> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                    return criteriaBuilder.equal(root.get("name").as(String.class),"jsun2");
+                }
+            }
 
+        );
+        System.out.println("123123123");
+    }
 
 }
